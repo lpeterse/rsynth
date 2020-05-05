@@ -1,5 +1,5 @@
 #[derive(Debug, Clone, Copy, Default)]
-pub struct Voltage(u32);
+pub struct Voltage(pub u32);
 
 impl Voltage {
     pub const MIN: Self = Self(u32::MIN);

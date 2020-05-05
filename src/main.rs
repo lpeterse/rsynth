@@ -10,9 +10,11 @@ fn main() -> Result<(), Box<dyn Error + Send + Sync + 'static>> {
     let mut s1 = sine(seq0.clone());
     let mut s2 = square(seq0.clone());
     let mut s3 = saw(seq0);
+    //println!("{}", (2.0f32 * (2.0f32.powi(31))));
 
     let mut z1 = sum!(s1, s2, s3);
     //let mut x = sine(hz(220.0));
-    play(&mut z1)
-    //Ok(())
+    play(&mut z1);
+    //play(&mut z1)
+    Ok(())
 }
