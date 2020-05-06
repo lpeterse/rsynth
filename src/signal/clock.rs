@@ -3,7 +3,7 @@ use crate::*;
 #[derive(Debug)]
 pub struct Clock<R: Rate = Hz44100> {
     f: Frequency<R>,
-    phi: u32,
+    phi: i32,
 }
 
 impl<R: Rate> Clock<R> {

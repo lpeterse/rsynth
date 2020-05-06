@@ -13,7 +13,7 @@ where
 impl<F: Signal<R, Sample = Frequency<R>>, R: Rate> Saw<F, R> {
     pub fn new(f: F) -> Self {
         Self {
-            phi: Angle::default(),
+            phi: Angle::NULL,
             f,
         }
     }
@@ -22,8 +22,10 @@ impl<F: Signal<R, Sample = Frequency<R>>, R: Rate> Saw<F, R> {
 impl<F: Signal<R, Sample = Frequency<R>>, R: Rate> Signal<R> for Saw<F, R> {
     type Sample = Voltage;
 
+    #[inline(never)]
     fn sample(&mut self) -> Voltage {
-        self.phi = self.phi.add(self.f.sample());
-        self.phi.0.into()
+        let x = self.phi.0.wrapping_add(self.f.sample().0);
+        self.phi.0 = x;
+        Voltage(x as f32)
     }
 }

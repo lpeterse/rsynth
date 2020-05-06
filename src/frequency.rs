@@ -2,17 +2,17 @@ use crate::*;
 use std::marker::PhantomData;
 
 #[derive(Debug, Copy, Clone, Default)]
-pub struct Frequency<R: Rate = Hz44100>(u32, PhantomData<*const R>);
+pub struct Frequency<R: Rate = Hz44100>(pub i32, PhantomData<*const R>);
 
 impl <R: Rate> Frequency<R> {
-    pub fn delta(self) -> u32 {
+    pub fn delta(self) -> i32 {
         self.0
     }
 }
 
 pub const fn hz(f: f32) -> Frequency<Hz44100> {
     let x = f * Hz44100::RECIPROCAL as f32;
-    Frequency(x as u32, PhantomData)
+    Frequency(x as i32, PhantomData)
 }
 
 pub const C3: Frequency = hz(130.813);

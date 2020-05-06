@@ -16,6 +16,9 @@ pub fn play<S: Signal<Sample = Voltage>>(
         rate: 44100,
     };
 
+    //let mut x = sine(hz(440.0));
+    //println!("{:?}", x.sample());
+
     let s: Simple = Simple::new(
         None,                   // Use the default server
         env!("CARGO_PKG_NAME"), // Our application’s name
@@ -30,17 +33,16 @@ pub fn play<S: Signal<Sample = Voltage>>(
 
     let mut buf: [u8; 2048] = [0; 2048];
 
-    loop {
+    while s.write(&buf).is_ok() {
         for i in 0..1024 {
-            let voltage: u32 = signal.sample().into();
-            let voltage = (voltage / 65536) as i32;
-            let voltage = (voltage - 32768) as i16;
+            let voltage = signal.sample();
+            let voltage = (voltage.0 * 2f32.powi(15)) as i16;
             let [a, b] = voltage.to_le_bytes();
             unsafe {
                 *buf.get_unchecked_mut(i * 2) = a;
                 *buf.get_unchecked_mut(i * 2 + 1) = b;
             }
         }
-        s.write(&buf).ok().ok_or("")?;
     }
+    Ok(())
 }

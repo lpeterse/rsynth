@@ -55,7 +55,7 @@ where
         let mut inner = self.inner.borrow_mut();
         if self.count >= inner.count {
             inner.sample = inner.signal.sample();
-            inner.count += 1;
+            inner.count  = inner.count.wrapping_add(1);
         }
         self.count = inner.count;
         inner.sample

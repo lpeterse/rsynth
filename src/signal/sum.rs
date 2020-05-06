@@ -25,12 +25,11 @@ where
     type Sample = Voltage;
 
     fn sample(&mut self) -> Voltage {
-        let mut sum: u64 = 0;
+        let mut sum: f32 = 0.0;
         for signal in &mut self.signals {
-            let sample: u32 = signal.sample().into();
-            sum = sum.wrapping_add(sample as u64);
+            sum += signal.sample().0;
         }
-        ((sum / self.signals.len() as u64) as u32).into()
+        Voltage(sum / self.signals.len() as f32)
     }
 }
 
